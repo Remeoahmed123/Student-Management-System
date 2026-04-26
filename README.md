@@ -1,37 +1,30 @@
 #  Student Management System (SQL Project)
 
+---
+
 ##  Project Description
 
-The **Student Management System** is a relational database project developed using **MySQL**. It is designed to efficiently manage and organize student-related information such as personal details, department assignments, and fee records.
+The **Student Management System** is a relational database project developed using **MySQL**. It is designed to manage student records, departments, courses, and fee details efficiently.
 
-This project demonstrates how structured databases are used in real-world systems to handle large amounts of data in an efficient, secure, and meaningful way.
+This system demonstrates how academic data can be stored, linked, and analyzed using SQL queries.
 
 ---
 
 ##  Overview
 
-This system uses a **relational database model** where multiple tables are connected using **primary keys** and **foreign keys**. The goal is to ensure:
+This project is based on a **relational database model**, where multiple tables are connected using keys. It manages student information along with their department, enrolled courses, and fee status.
 
-* Data consistency
-* Data integrity
-* Reduced redundancy
-
-The project shows how data from different tables can be combined using SQL queries to produce useful results, such as:
-
-* Student details with department names
-* Student fee payment status
-
-It also reflects real-world use cases like school/college management systems.
+The system uses SQL queries to retrieve meaningful information by combining data from multiple tables.
 
 ---
 
 ##  Objectives
 
-* To design a structured database system
+* To design a student database system
+* To manage student, department, course, and fee data
 * To understand relationships between tables
-* To perform CRUD operations (Create, Read, Update, Delete)
-* To practice SQL queries like JOIN, SELECT, and filtering
-* To build a strong foundation in database management
+* To practice SQL queries (SELECT, JOIN)
+* To analyze student fee records
 
 ---
 
@@ -42,64 +35,83 @@ It also reflects real-world use cases like school/college management systems.
 
 ---
 
-## 🗄️ Database Schema
+##  Database Structure
 
 ###  Students Table
 
-| Column Name | Data Type | Description          |
-| ----------- | --------- | -------------------- |
-| student_id  | INT (PK)  | Unique ID of student |
-| name        | VARCHAR   | Student name         |
-| age         | INT       | Student age          |
-| gender      | VARCHAR   | Gender               |
-| dept_id     | INT (FK)  | Department ID        |
+| Column Name | Description       |
+| ----------- | ----------------- |
+| student_id  | Unique student ID |
+| name        | Student name      |
+| age         | Student age       |
+| city        | Student city      |
+| dept_id     | Linked department |
 
 ---
 
 ###  Departments Table
 
-| Column Name | Data Type | Description     |
-| ----------- | --------- | --------------- |
-| dept_id     | INT (PK)  | Department ID   |
-| dept_name   | VARCHAR   | Department name |
+| Column Name | Description          |
+| ----------- | -------------------- |
+| dept_id     | Unique department ID |
+| dept_name   | Department name      |
+| location    | Department location  |
+
+---
+
+###  Courses Table
+
+| Column Name | Description       |
+| ----------- | ----------------- |
+| course_id   | Unique course ID  |
+| course_name | Course name       |
+| dept_id     | Linked department |
 
 ---
 
 ###  Fees Table
 
-| Column Name | Data Type | Description    |
-| ----------- | --------- | -------------- |
-| fee_id      | INT (PK)  | Fee record ID  |
-| student_id  | INT (FK)  | Linked student |
-| amount      | DECIMAL   | Fee amount     |
-| status      | VARCHAR   | Paid / Unpaid  |
+| Column Name | Description    |
+| ----------- | -------------- |
+| fee_id      | Unique fee ID  |
+| student_id  | Linked student |
+| amount      | Fee amount     |
+| status      | Paid / Pending |
 
 ---
 
 ##  Relationships
 
-* One **department** can have many students
-* Each **student** belongs to one department
-* One **student** can have multiple fee records
-* Tables are connected through foreign keys
+* Each student belongs to one department
+* Each department can have multiple students
+* Each course is linked to a department
+* Each fee record is linked to a student
 
 ---
 
 ##  Key Features
 
-* Store and manage student records
-* Manage departments effectively
-* Track fee payments
-* Perform complex queries using JOIN
-* Ensure data accuracy using constraints
+* Store student details
+* Manage departments and courses
+* Track student fees
+* Perform JOIN queries
+* Analyze fee status
 
 ---
 
 ##  Sample SQL Queries
 
-###  Get Students with Departments
+###  Students + Fees
 
-```sql id="x1a2b3"
+```sql
+SELECT s.name, f.amount, f.status
+FROM students s
+JOIN fees f ON s.student_id = f.student_id;
+```
+
+###  Students + Departments
+
+```sql
 SELECT s.name, d.dept_name
 FROM students s
 JOIN departments d ON s.dept_id = d.dept_id;
@@ -107,78 +119,37 @@ JOIN departments d ON s.dept_id = d.dept_id;
 
 ---
 
-###  Get Students with Fee Details
+##  Output Explanation
 
-```sql id="y7k9p2"
-SELECT s.name, f.amount, f.status
-FROM students s
-JOIN fees f ON s.student_id = f.student_id;
-```
+The system generates combined data using SQL JOIN operations.
 
----
+### Output Includes:
 
-###  Get Paid Students
+* Student names with their fee amount and status
+* Student names with their department
 
-```sql id="q2w3e4"
-SELECT s.name, f.status
-FROM students s
-JOIN fees f ON s.student_id = f.student_id
-WHERE f.status = 'Paid';
-```
+### Explanation:
 
----
+* The JOIN operation connects tables using keys like `student_id` and `dept_id`
+* It helps display related data from multiple tables in a single result
 
-## ⚙️ Installation & Setup
+### Example Output:
 
-### Step 1: Install MySQL
+| Name   | Amount | Status  |
+| ------ | ------ | ------- |
+| ALI    | 50000  | Paid    |
+| AYESHA | 70000  | Pending |
+| AHMED  | 80000  | Paid    |
+| ALINA  | 90000  | Paid    |
 
-Download and install MySQL Workbench.
+This output shows:
 
-### Step 2: Create Database
+* Fee payment status of each student
+* Which students have paid or pending fees
+<img width="807" height="173" alt="Output" src="https://github.com/user-attachments/assets/250a6156-95bd-421f-ae2f-4d18be40eec3" />
 
-```sql id="db001"
-CREATE DATABASE StudentDB;
-USE StudentDB;
-```
+##  Conclusion
 
-### Step 3: Run Project File
-
-* Open `student.sql`
-* Execute the script in MySQL Workbench
+This project demonstrates how relational databases work by linking multiple tables. It shows how SQL JOIN queries can be used to retrieve meaningful academic and financial information.
 
 ---
-
-##  Output
-
-The system produces:
-
-* Student information
-* Department details
-* Fee payment records
-
----
-
-##  Future Improvements
-
-* Add a graphical user interface (GUI)
-* Connect with a frontend (React.js)
-* Add authentication system
-* Generate reports and analytics
-
----
-
-##  Learning Outcomes
-
-After completing this project, you will:
-
-* Understand relational databases
-* Write efficient SQL queries
-* Design database schemas
-* Work with real-world data scenarios
-
----
-
-
-
-<img width="807" height="173" alt="Output" src="https://github.com/user-attachments/assets/7db0aed5-57c3-4dd4-88d2-20a0370b49fa" />
-
